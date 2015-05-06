@@ -8,20 +8,6 @@ function serializeOption(value) {
   return JSON.stringify(value);
 }
 
-var phantomJSExePath = function () {
-  // If the path we're given by phantomjs is to a .cmd, it is pointing to a global copy. 
-  // Using the cmd as the process to execute causes problems cleaning up the processes 
-  // so we walk from the cmd to the phantomjs.exe and use that instead.
-
-  var phantomSource = require('phantomjs').path;
-
-  if (path.extname(phantomSource).toLowerCase() === '.cmd') {
-    return path.join(path.dirname( phantomSource ), '//node_modules//phantomjs//lib//phantom//phantomjs.exe');
-  }
-
-  return phantomSource;
-};
-
 var PhantomJSBrowser = function(baseBrowserDecorator, config, args) {
   baseBrowserDecorator(this);
 
@@ -56,12 +42,6 @@ var PhantomJSBrowser = function(baseBrowserDecorator, config, args) {
 
 PhantomJSBrowser.prototype = {
   name: 'PhantomJS',
-
-  DEFAULT_CMD: {
-    linux: require('phantomjs').path,
-    darwin: require('phantomjs').path,
-    win32: phantomJSExePath()
-  },
   ENV_CMD: 'PHANTOMJS_BIN'
 };
 
